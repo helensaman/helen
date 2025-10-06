@@ -306,6 +306,128 @@
             </div>
         </div>
     </section>
+    <!-- Projects Section -->
+<section id="projects" class="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+  <div class="container mx-auto px-6">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100">My Projects</h2>
+
+      <!-- Dark/Light toggle -->
+      <button id="theme-toggle" class="flex items-center space-x-2 bg-indigo-50 dark:bg-gray-800 text-indigo-700 dark:text-indigo-300 px-3 py-2 rounded-full shadow-sm">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span id="theme-label" class="text-sm">Dark</span>
+      </button>
+    </div>
+
+    <p class="text-gray-600 dark:text-gray-300 mb-8">A highlighted project from my portfolio.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Single Project Card -->
+      <div class="project-card bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md transform transition hover:-translate-y-2 hover:shadow-2xl">
+        <div class="relative group">
+          <!-- Replace src with your screenshot file (e.g. history-screenshot.png) -->
+          <img id="history-screenshot" src="history-screenshot.png" alt="History Kurdistan screenshot" class="w-full h-56 object-cover cursor-pointer" onclick="openLightbox(this.src)">
+          <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+            <button onclick="openLightbox(document.getElementById('history-screenshot').src)" class="bg-white text-indigo-600 px-4 py-2 rounded-full font-semibold">Preview</button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">History Kurdistan</h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            A polished website presenting Kurdish history, key events and figures in an accessible, beautifully designed layout — aimed to educate and engage visitors.
+          </p>
+
+          <div class="flex items-center justify-between">
+            <div class="space-x-3">
+              <a href="https://kurdehhhistory.netlify.app/" target="_blank" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-indigo-700 transition">View Live</a>
+              <!-- optional GitHub link (remove if none) -->
+              <a href="#" id="github-link" class="inline-block border border-indigo-600 text-indigo-600 px-4 py-2 rounded-full font-semibold hover:bg-indigo-50 dark:hover:bg-gray-700 transition">Source</a>
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">Tech: HTML • CSS • JS • Tailwind</div>
+          </div>
+        </div>
+      </div>
+      <!-- end project card -->
+
+      <!-- (Optional) Empty placeholders to keep grid neat on wide screens -->
+      <div class="hidden lg:block"></div>
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox modal -->
+  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 p-4">
+    <div class="max-w-4xl w-full relative">
+      <button id="lb-close" class="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg" aria-label="close">
+        <i class="fas fa-times text-gray-700"></i>
+      </button>
+      <img id="lb-img" src="" alt="screenshot large" class="w-full h-auto rounded-lg shadow-xl">
+      <div class="mt-3 text-right">
+        <a id="lb-open-link" href="#" target="_blank" class="inline-block bg-white text-indigo-600 px-4 py-2 rounded-full font-semibold">Open live site</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Script: theme toggle + lightbox -->
+<script>
+  // Theme toggle (persist in localStorage)
+  (function(){
+    const btn = document.getElementById('theme-toggle');
+    const label = document.getElementById('theme-label');
+    const icon = document.getElementById('theme-icon');
+    const root = document.documentElement || document.body;
+
+    function applyTheme(isDark){
+      if(isDark){
+        root.classList.add('dark');
+        label.textContent = 'Dark';
+        icon.className = 'fas fa-moon';
+      } else {
+        root.classList.remove('dark');
+        label.textContent = 'Light';
+        icon.className = 'fas fa-sun';
+      }
+    }
+
+    const saved = localStorage.getItem('hs_theme');
+    const initialDark = saved ? saved === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    applyTheme(initialDark);
+
+    btn.addEventListener('click', () => {
+      const isDark = root.classList.toggle('dark');
+      localStorage.setItem('hs_theme', isDark ? 'dark' : 'light');
+      applyTheme(isDark);
+    });
+  })();
+
+  // Lightbox
+  function openLightbox(src){
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lb-img');
+    const link = document.getElementById('lb-open-link');
+    img.src = src;
+    link.href = 'https://kurdehhhistory.netlify.app/';
+    lb.classList.remove('hidden');
+    lb.classList.add('flex');
+  }
+
+  document.getElementById('lb-close').addEventListener('click', () => {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('flex');
+    lb.classList.add('hidden');
+    document.getElementById('lb-img').src = '';
+  });
+
+  // Close lightbox when clicking backdrop
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if(e.target.id === 'lightbox') {
+      document.getElementById('lb-close').click();
+    }
+  });
+</script>
+
 
     
 
@@ -477,4 +599,5 @@
 </body>
 
 </html>
+
 
